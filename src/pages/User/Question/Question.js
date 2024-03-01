@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const answerDiv = document.createElement("div");
         answerDiv.classList.add("question-choice");
 
-        for (const key in questionData) {
+        for (const key in questionData.choice[0]) {
             const optionA = document.createElement("div");
-            optionA.textContent = `${key.choice[0]}.`;
+            optionA.textContent = `${key}. ${questionData.choice[0][key]}`;
 
             answerDiv.appendChild(optionA);
         }
