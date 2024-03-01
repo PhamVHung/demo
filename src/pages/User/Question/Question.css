@@ -1,0 +1,11 @@
+.answer {
+  cursor: pointer;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid black;
+  display: inline-block;
+}
+
+.selected {
+  background-color: lightblue;
+}
