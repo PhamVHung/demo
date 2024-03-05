@@ -10,7 +10,7 @@ const questionData = getQuestion();
 
 let score = 0;
 let currentIndex = 0;
-let testLength;
+let testLength = 10;
 
 function startQuiz() {
   currentIndex = 0;
@@ -23,8 +23,8 @@ function startQuiz() {
 function showQuestion() {
   resetState();
   questionData.then((data) => {
-    let shuffledQuestion = shuffle(data).splice(0, 1);
-    testLength = shuffledQuestion.length;
+    let shuffledQuestion = shuffle(data);
+    // testLength = shuffledQuestion.length;
     let currentQuestion = shuffledQuestion[currentIndex];
     let questionNumber = currentIndex + 1;
     questionElement.innerText =

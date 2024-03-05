@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Login and Sign Up form </title>
+    <link rel="stylesheet" href="Signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.css" />
+    <script src="Signup.js" defer></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        <h1>Đăng kí</h1>
+        <form action="#">
+            <input type="text" placeholder="Họ và tên">
+            <input type="text" placeholder="Tài khoản">
+            <input type="text" placeholder="Gmail">
+            <div class="pass-field">
+                <input type="password" placeholder="Mật khẩu">
+                <c class="fa-solid fa-eye"></c>
+            </div>
+            <div class="password-check">
+                <input type="password" placeholder="Xác nhận mật khẩu">
+                <b class="fa-solid fa-eye"></b>
+            </div>
+            <l id="message"> </l>
+            <div class="content">
+                <p> Mật khẩu phải bao gồm </p>
+                <ul class="requirement-list">
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span> Tối thiểu 8 kí tự</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span> Tối thiểu 1 chữ số (0...9)</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span> Tối thiểu 1 kí tự viết thường (a...z)</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span> Tối thiểu 1 kí tự in hoa (A...Z)</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle"></i>
+                        <span> Tối thiểu 1 kí tự đặc biệt</span>
+                    </li>
+
+                </ul>
+
+                </p>
+            </div>
+        </form>
+        <button type="submit" onclick="checkPassword()">Đăng kí</button>
+        <div class="member">
+            Đã có tài khoản?
+            <a href="../Login/Login.html">
+                Đăng nhập
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>
