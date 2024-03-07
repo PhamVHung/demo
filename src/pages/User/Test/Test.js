@@ -132,17 +132,20 @@ function showScore() {
     let correctAnswers = 0;
     for (let i = 0; i < testLength; i++) {
       const currentQuestion = data[i];
+      const selectedAnswerIndex = selectedAnswers[i];
       if (
-        selectedAnswers[i] !== undefined &&
-        currentQuestion.correctIndex === selectedAnswers[i]
+        selectedAnswerIndex !== undefined &&
+        currentQuestion.answers[selectedAnswerIndex].correct
       ) {
         correctAnswers++;
       }
     }
-    score = (correctAnswers / testLength) * 100;
-    alert("Your score: " + score.toFixed(2) + "%");
+    const score = (correctAnswers / testLength) * 100;
+    const message = "Your score: " + score.toFixed(2) + "%";
+    alert(message);
   });
 }
+
 
 function getQuestionData() {
   return fetch(question_path).then((response) => {
