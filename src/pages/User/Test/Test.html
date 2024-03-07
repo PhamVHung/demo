@@ -1,29 +1,53 @@
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Test</title>
   <link rel="stylesheet" href="Test.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- <link rel="stylesheet" href="../../../assets/bootstrap/bootstrap.bundle.min.css">
+  <script src="../../../assets/bootstrap/jquery.slim.min.js"></script>
+  <script src="../../../assets/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
 </head>
-<body>
 
-  <div class="quiz-test-container">
-    <h1>Test</h1>
-    <div class="quiz">
-      <h2 id="question">Question data</h2>
-      <div id="answer-buttons">
+<body>
+  <div id="container">
+    <div class="test-container">
+      <h2 class="question-number">Question 1</h2>
+      <p class="question-title">Lorem ipsum</p>
+      <div class="answer-buttons">
         <button class="btn">A</button>
         <button class="btn">B</button>
         <button class="btn">C</button>
         <button class="btn">D</button>
       </div>
       <div class="function-btn">
-        <button id="next-btn">Next</button>
-        <button id="home-btn">Home</button>
+        <div class="function-left">
+          <div class="countdown-timer">60:00</div>
+          <input type="checkbox">Flag
+        </div>
+        <div class="function-right">
+          <i class="fa-solid fa-ellipsis more-btn"></i>
+          <i class="fa-solid fa-arrow-right next-btn"></i>
+        </div>
       </div>
+      <div class="card-body">
+        <div class="table-question">
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+          <div>1</div>
+        </div>
+      </div>
+      <button type="submit" id="submitBtn">Nộp bài</button>
     </div>
   </div>
 
+
   <script src="Test.js"></script>
 </body>
+
 </html>
