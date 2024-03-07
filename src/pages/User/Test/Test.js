@@ -1,142 +1,153 @@
 const question_path = "../../../assets/demo.json";
+const container = document.getElementById("container");
 
-const questionElement = document.getElementById("question");
-const answerButton = document.getElementById("answer-buttons");
-const nextButton = document.getElementById("next-btn");
-const homeButton = document.getElementById("home-btn");
-const questionData = getQuestion();
-
-// console.log(questionData.size)
-
-let score = 0;
 let currentIndex = 0;
-let testLength = 10;
+let testLength = 0;
+let score = 0;
+let selectedAnswers = [];
+let questionData = [];
 
-function startQuiz() {
+function startTest() {
   currentIndex = 0;
   score = 0;
-  nextButton.innerHTML = "Next";
-  homeButton.innerHTML = "Home";
+  selectedAnswers = [];
+  questionData = [];
   showQuestion();
 }
 
 function showQuestion() {
-  resetState();
-  questionData.then((data) => {
-    let shuffledQuestion = shuffle(data);
-    // testLength = shuffledQuestion.length;
-    let currentQuestion = shuffledQuestion[currentIndex];
-    let questionNumber = currentIndex + 1;
-    questionElement.innerText =
-      questionNumber + ". " + currentQuestion.question;
+  getQuestionData().then((data) => {
+    questionData = data.slice(0, 10);
+    testLength = questionData.length;
+    const currentQuestion = questionData[currentIndex];
 
-    const shuffledAnswers = shuffle(currentQuestion.answers);
+    const testContainer = document.createElement("div");
+    testContainer.classList.add("test-container");
+    testContainer.innerHTML = `
+      <h2 class="question-number">Question ${currentIndex + 1}:</h2>
+      <p class="question-title">${currentQuestion.question}</p>
+      <div class="answer-buttons">
+        ${currentQuestion.answers
+          .map((answer, index) => {
+            const isSelected =
+              selectedAnswers[currentIndex] === index ? "selected" : "";
+            return `<button type="button" class="btn ${isSelected}" data-index="${index}">${answer.answer}</button>`;
+          })
+          .join("")}
+      </div>
+      <div class="function-btn">
+        <div class="function-left">
+          <div class="countdown-timer">1:00:00</div>
+          <input type="checkbox" id="flagCheckbox">
+          <label for="flagCheckbox">Flag</label>
+        </div>
+        <div class="function-right">
+          <i class="fa-solid fa-arrow-left next-btn" id="prevBtn"></i>
+          <i class="fa-solid fa-ellipsis more-btn"></i>
+          <i class="fa-solid fa-arrow-right next-btn" id="nextBtn"></i>
+        </div>
+      </div>
+    `;
 
-    shuffledAnswers.forEach((answer) => {
-      const button = document.createElement("button");
-      button.innerText = answer.answer;
-      button.classList.add("btn");
-      answerButton.appendChild(button);
-      if (answer.correct) {
-        button.dataset.correct = answer.correct;
+    const card_body = document.createElement("div");
+    card_body.classList.add("card-body");
+    card_body.innerHTML = `
+    <div>
+      <div class="table-question">
+        ${questionData
+          .map((question, index) => {
+            return `<div class="cell jumpBtn" data-index="${index}"}">${
+              index + 1
+            }</div>`;
+          })
+          .join("")}
+      </div>
+    </div>
+    <button type="submit" id="submitBtn">Nộp bài</button>
+    `;
+
+    container.innerHTML = "";
+    container.appendChild(testContainer);
+    testContainer.appendChild(card_body);
+
+    const answerButtons = testContainer.querySelectorAll(
+      ".answer-buttons button"
+    );
+    answerButtons.forEach((button) => {
+      button.addEventListener("click", handleAnswerSelection);
+    });
+
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const jumpBtn = document.querySelector(".table-question");
+    const submitBtn = document.getElementById("submitBtn");
+    prevBtn.addEventListener("click", () => changeQuestion(-1));
+    nextBtn.addEventListener("click", () => changeQuestion(1));
+    submitBtn.addEventListener("click", () => showScore())
+    jumpBtn.addEventListener("click", (event) => {
+      if (event.target.classList.contains("jumpBtn")) {
+        const index = parseInt(event.target.dataset.index);
+        jumpQuestion(index);
       }
-      button.addEventListener("click", selectAnswer);
     });
   });
 }
 
-function selectAnswer(event) {
+function handleAnswerSelection(event) {
   const selectedButton = event.target;
-  const isCorrect = selectedButton.dataset.correct === "true";
-  if (isCorrect) {
-    selectedButton.classList.add("correct");
-    score += 1;
-  } else {
-    selectedButton.classList.add("incorrect");
-  }
-  Array.from(answerButton.children).forEach((button) => {
-    if (button.dataset.correct === "true") {
-      button.classList.add("correct");
+  const selectedIndex = parseInt(selectedButton.getAttribute("data-index"));
+
+  const answerButtons = document.querySelectorAll(".answer-buttons button");
+  answerButtons.forEach((button) => {
+    if (button !== selectedButton) {
+      button.classList.remove("selected");
     }
-    button.disabled = true;
   });
-  nextButton.style.display = "block";
+
+  // Add "selected" class to the selected button
+  selectedButton.classList.add("selected");
+
+  selectedAnswers[currentIndex] = selectedIndex;
+  console.log(selectedAnswers);
 }
 
-nextButton.addEventListener("click", () => {
-  if (currentIndex < testLength) handleNextButton();
-  else startQuiz();
-});
-
-function handleNextButton() {
-  currentIndex += 1;
-  if (currentIndex < testLength) showQuestion();
-  else showScore();
+function changeQuestion(direction) {
+  currentIndex += direction;
+  if (currentIndex >= 0 && currentIndex < testLength) {
+    showQuestion();
+  } else if (currentIndex === testLength) {
+    showScore();
+  } else {
+    currentIndex -= direction;
+  }
 }
 
-homeButton.addEventListener("click", ()=> {
-  window.location.href = "../Home/Home.html";
-})
+function jumpQuestion(index) {
+  currentIndex = index;
+  showQuestion();
+}
 
 function showScore() {
-  resetState();
-    questionElement.innerHTML = `You got ${score} out of ${testLength} questions`;
-    nextButton.innerHTML = "Try again";
-    homeButton.innerHTML = "Home";
-    nextButton.style.display = "block";
-    homeButton.style.display = "block";
+  getQuestionData().then((data) => {
+    let correctAnswers = 0;
+    for (let i = 0; i < testLength; i++) {
+      const currentQuestion = data[i];
+      if (
+        selectedAnswers[i] !== undefined &&
+        currentQuestion.correctIndex === selectedAnswers[i]
+      ) {
+        correctAnswers++;
+      }
+    }
+    score = (correctAnswers / testLength) * 100;
+    alert("Your score: " + score.toFixed(2) + "%");
+  });
 }
 
-function resetState() {
-  nextButton.style.display = "none";
-  homeButton.style.display = "none";
-  while (answerButton.firstChild) {
-    answerButton.removeChild(answerButton.firstChild);
-  }
-}
-
-function getQuestion() {
+function getQuestionData() {
   return fetch(question_path).then((response) => {
-    if (!response.ok) throw new Error();
     return response.json();
   });
 }
 
-function shuffle(array) {
-  let currentIndex = array.length;
-  let randomIndex;
-
-  while (currentIndex !== 0) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return array;
-}
-
-startQuiz();
-
-// fetch(question_path)
-//   .then(response => {
-//     if (!response.ok) {
-//       throw new Error('Network response was not ok');
-//     }
-//     return response.json();
-//   })
-//   .then(data => {
-//     // Log the JSON data to the console
-//     let currentQuestion = data[0];
-//     console.log(currentQuestion);
-
-//     currentQuestion.answers.forEach(answer => {
-//       console.log(answer.answer);
-//     });
-//   })
-//   .catch(error => {
-//     console.error('There was a problem with the fetch operation:', error);
-//   });
+startTest();

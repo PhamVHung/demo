@@ -1,17 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+:root {
+  --color-text: #000;
+  --color-red: #bb2019;
+}
+
 * {
   margin: 0;
   padding: 0;
-  font-family: 'Times New Roman', Times, serif;
+  font-family: "Poppins", sans-serif;
   box-sizing: border-box;
 }
-
-body {
-  background: #ff0b0bc4;
+.container {
+  /* width: 50%; */
+  max-width: 500px;
+  max-height: 500px;
+  margin: 100px auto 0;
+  border-radius: 10px;
+  padding: 30px;
 }
-
-.quiz-test-container {
+.test-container {
   background: white;
-  width: 90%;
+  width: 100%;
   max-width: 600px;
   margin: 100px auto 0;
   border-radius: 10px;
@@ -21,23 +30,21 @@ body {
   -ms-border-radius: 10px;
   -o-border-radius: 10px;
 }
-.quiz-test-container h1 {
+.test-container h1 {
   font-weight: 25px;
-  color: #ff0b0bc4;
   font-weight: 600;
   border-bottom: 2px solid #333;
-  padding-bottom: 30px;
+  padding-bottom: 20px;
+  /* padding-top: 30px; */
+  padding: 20px 0;
 }
-.quiz {
+.question {
   padding: 20px 0;
 }
 .quiz h2 {
-  font-size: 18px;
+  font-size: 24px;
   color: black;
   font-weight: 600;
-}
-.function-btn {
-  display: flex;
 }
 .btn {
   background: #fff;
@@ -66,25 +73,53 @@ body {
 .btn:disabled {
   cursor: no-drop;
 }
-#next-btn, #home-btn {
-  background-color: #ff0b0bc4;
-  color: white;
-  border-radius: 4px;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -ms-border-radius: 4px;
-  -o-border-radius: 4px;
-  font-weight: 500;
-  width: 150px;
-  border: 0;
-  padding: 10px;
-  margin: 20px auto 0;
-  cursor: pointer;
+.btn.selected {
+  background: rgb(168, 166, 166);
+  color: #333;
+}
+#submitBtn {
   display: block;
+  margin: 30px auto;
+  width: 50%;
+  padding: 10px;
 }
-.correct {
-  background: rgb(24, 177, 24);
+.function-btn {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
 }
-.incorrect {
-  background: #ff0b0bc4;
+.function-btn .function-left {
+  display: flex;
+}
+.function-btn .function-left .countdown-timer {
+  margin-right: 20px;
+}
+.function-btn .function-left input {
+  margin-right: 5px;
+}
+.function-btn .function-right {
+  display: flex;
+  gap: 20px;
+}
+.card-body {
+  margin: auto;
+  width: 100%;
+  background: #e3e3e3;
+  padding: 20px;
+  border-radius: 5%;
+}
+.table-question {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+  text-align: center;
+}
+.cell {
+  border: 1px solid;
+  background-color: #fff;
+  cursor: pointer;
+}
+.cell:hover {
+  background: rgb(168, 166, 166);
+  color: #333;
 }
